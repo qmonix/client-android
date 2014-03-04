@@ -21,7 +21,7 @@ Getting started
 ===============
 
 Simply invoke **make** which builds Qmonix android client .jar archive. Put
-this archive to your project and checkout the user guide [#f5]_ how to
+this archive to your project and checkout the user guide [#f5]_ to see how to
 integrate it to you android project.
 
 
