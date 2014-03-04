@@ -1,0 +1,11 @@
+<ivy-module version="2.2">
+	<info organisation="com.qmonix.sdk" module="android-event-client"/>
+
+	<dependencies>
+		<dependency org="com.google.android" name="android"
+			rev="4.1.1.4"/>
+		<dependency org="org.apache.httpcomponents" name="httpclient"
+			rev="4.2.5"/>
+		<dependency org="org.json" name="json" rev="20090211"/>
+	</dependencies>
+</ivy-module>
