@@ -2,6 +2,9 @@ package com.qmonix.sdk.helpers;
 
 import java.lang.String;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.client.ResponseHandler;
@@ -23,6 +26,7 @@ import java.io.IOException;
 import com.qmonix.sdk.helpers.exceptions.HttpHelperException;
 import com.qmonix.sdk.utils.AsyncTaskResult;
 
+
 /**
  * HTTP helper class that deals with HTTP message transmission. If it is used from the main UI
  * thread {@link #uiPostMessage uiPostMessage} should be used. It uses {@link AsyncTask} to avoid
@@ -31,19 +35,22 @@ import com.qmonix.sdk.utils.AsyncTaskResult;
  */
 public class HttpHelper
 {
-	private final String url;
-	private final int port;
+	private String hostname;
+	private int port;
+	private URI httpPostUri;
+
 
 	/**
-	 * Constructs a new http helper object using a specified server url and port number.
+	 * Constructs a new http helper object using a specified server uri.
 	 *
-	 * @param url	server url.
-	 * @param port	server port number.
+	 * @param uri server url.
 	 */
-	public HttpHelper(String url, int port)
+	public HttpHelper(String uri) throws URISyntaxException
 	{
-		this.url = url;
-		this.port = port;
+		this.httpPostUri = new URI(uri);
+
+		this.hostname = this.httpPostUri.getHost();
+		this.port = this.httpPostUri.getPort();
 	}
 
 	/**
@@ -95,9 +102,9 @@ public class HttpHelper
 	 */
 	public String postMessage(String message) throws HttpHelperException
 	{
-		HttpHost httpHost = new HttpHost(this.url, this.port, "http");
+		HttpHost httpHost = new HttpHost(this.hostname, this.port, "http");
 		HttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPost = new HttpPost(this.url);
+		HttpPost httpPost = new HttpPost(this.httpPostUri);
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		String httpResponse = "";
 
