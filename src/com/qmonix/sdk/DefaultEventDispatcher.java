@@ -2,6 +2,8 @@ package com.qmonix.sdk;
 
 import java.lang.String;
 
+import java.net.URISyntaxException;
+
 import org.json.JSONException;
 
 import com.qmonix.sdk.EventDispatcher;
@@ -40,18 +42,28 @@ public class DefaultEventDispatcher implements EventDispatcher
 
 	private HttpHelper httpHelper;
 
+
 	/**
 	 * Creates new dispatcher object which sends collected events to the Server.
-	 * Server address and port are specified in the parameters.
+	 * Uri to which events are sent must be specified in the parameters.
 	 *
-	 * @param serverAddress Server address.
-	 * @param serverPort Server port.
+	 * @param eventUri server uri to which events must be posted.
+	 *	E.g. http://qmonix.com:8337/event/. qmonix.com should be replaced with your
+	 *	server hostname.
 	 */
-	public DefaultEventDispatcher(String serverAddress, int serverPort)
+	public DefaultEventDispatcher(String eventUri) throws
+		DefaultEventDispatcherException
 	{
 		this.eventMessage = new EventMessage();
 
-		this.httpHelper = new HttpHelper(serverAddress, serverPort);
+		try
+		{
+			this.httpHelper = new HttpHelper(eventUri);
+		}
+		catch (URISyntaxException e)
+		{
+			throw new DefaultEventDispatcherException("Bad server URI.");
+		}
 	}
 
 	/**
