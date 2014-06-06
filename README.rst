@@ -1,6 +1,6 @@
-===========
-Inroduction
-===========
+============
+Introduction
+============
 
 This is Qmonix client implementation for Android Java based applications.
 Qmonix is highly customizable, easy to use multi-platform analytics system.
