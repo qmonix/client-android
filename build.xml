@@ -18,6 +18,8 @@
 	<property name="src.dir" value="src" />
 	<property name="src.build.dir" value="${build.dir}/classes/src" />
 
+	<property name="javadoc.build.dir" value="${build.dir}/javadoc" />
+
 	<!-- makes TODAY property available -->
 	<tstamp prefix="time">
 		<format property="TODAY" pattern="yyyy-MM-dd"/>
@@ -78,5 +80,12 @@
 	</target>
 
 	<target name="build" depends="jar" />
+
+	<target name="javadoc" depends="resolve-deps" >
+		<javadoc sourcepath="${src.dir}"
+			destdir="${javadoc.build.dir}" >
+			<classpath refid="project.class.path"/>
+		</javadoc>
+	</target>
 
 </project>
