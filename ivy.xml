@@ -1,5 +1,5 @@
 <ivy-module version="2.2">
-	<info organisation="com.qmonix.sdk" module="android-event-client"/>
+	<info organisation="com.qmonix.sdk" module="AndroidClient"/>
 
 	<dependencies>
 		<dependency org="com.google.android" name="android"
