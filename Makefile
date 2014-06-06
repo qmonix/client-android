@@ -9,9 +9,6 @@
 
 ANDROID_SDK_VERSION ?= unknown
 
-SDK_JAR_NAME = qmonix-android-client.jar
-SDK_JAR_PATH = build/$(SDK_JAR_NAME)
-
 
 all: build
 .PHONY: all
