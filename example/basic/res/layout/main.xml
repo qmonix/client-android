@@ -1,0 +1,116 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".MainActivity" >
+
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical" >
+
+		<EditText
+			android:id="@+id/singleEventTag"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
+
+		<Button
+			android:id="@+id/fireEventButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Fire event"
+			android:textSize="14sp"
+			android:onClick="onFireEventClick" />
+
+		<View style="@style/HorizontalLine" />
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content" >
+
+			<Button
+				android:id="@+id/startTimingEventButton"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Start event"
+				android:textSize="14sp"
+				android:onClick="onStartTimingEventClick" />
+
+			<Button
+				android:id="@+id/pauseEventButton"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Pause"
+				android:textSize="14sp"
+				android:onClick="onPauseEventClick" />
+
+			<Button
+				android:id="@+id/resumeEventButton"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Resume"
+				android:textSize="14sp"
+				android:onClick="onResumeEventClick" />
+
+			<Button
+				android:id="@+id/stopEventButton"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Stop"
+				android:textSize="14sp"
+				android:onClick="onStopEventClick" />
+		</LinearLayout>
+
+		<TextView
+			android:id="@+id/timingEventSpinnerCaption"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Started timing events:\n" />
+
+		<Spinner
+			android:id="@+id/timingEventSpinner"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content" />
+
+		<View style="@style/HorizontalLine" />
+		<ScrollView
+			android:id="@+id/eventScrollView"
+			android:layout_width="match_parent"
+			android:layout_height="100dp"
+			android:layout_alignParentLeft="true"
+			android:layout_alignParentRight="true" >
+
+			<TextView
+				android:id="@+id/eventsToDispatchText"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Events to dispatch:\n" />
+		</ScrollView>
+
+		<Button
+			android:id="@+id/dispatchButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textSize="14sp"
+			android:text="Dispatch"
+			android:onClick="onDispatchClick" />
+
+		<View style="@style/HorizontalLine" />
+		<ScrollView
+			android:id="@+id/logScrollView"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentLeft="true"
+			android:layout_alignParentRight="true" >
+
+			<TextView
+				android:id="@+id/logText"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="Log:\n" />
+		</ScrollView>
+
+	</LinearLayout>
+
+</RelativeLayout>
