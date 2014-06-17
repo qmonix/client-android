@@ -8,6 +8,7 @@ import org.json.JSONException;
 import com.qmonix.sdk.helpers.LogHelper;
 import com.qmonix.sdk.utils.Utils;
 
+
 /**
  * Holds all information that is necessary to send a valid event message to the Server.
  * <p>
@@ -16,16 +17,8 @@ import com.qmonix.sdk.utils.Utils;
  */
 public class EventMessage
 {
-	private ArrayList<Event> eventList;
+	private ArrayList<Event> eventList = new ArrayList<Event>();
 
-	/**
-	 * Constructs a new event message object. Initially event list is empty. Use {@code addEvent}
-	 * to update event list.
-	 */
-	public EventMessage()
-	{
-		eventList = new ArrayList<Event>();
-	}
 
 	/**
 	 * Adds new event to the event list.
@@ -33,8 +26,7 @@ public class EventMessage
 	 * @param event event object to add to the list.
 	 * @see Event
 	 */
-	public void addEvent(Event event)
-	{
+	public void addEvent(Event event) {
 		this.eventList.add(event);
 	}
 
@@ -45,22 +37,18 @@ public class EventMessage
 	 * @return event message in JSON format.
 	 * @throws JSONException if fails to encode event message to JSON formatted string.
 	 */
-	public String toJson() throws JSONException
-	{
+	public String toJson() throws JSONException {
 		JSONObject json = new JSONObject();
 		JSONArray jsonEvents = new JSONArray();
-		for (Event e : this.eventList)
-		{
+		for (Event e : this.eventList) {
 			jsonEvents.put(e.toJson());
 		}
 
-		long time_now = Utils.getUnixTime();
-
 		json.put("events", jsonEvents);
+
+		long time_now = Utils.getUnixTime();
 		json.put("whenSent", time_now);
 
-		String retval = json.toString(4);
-
-		return retval;
+		return json.toString();
 	}
 }
