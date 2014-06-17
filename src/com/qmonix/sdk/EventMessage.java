@@ -9,16 +9,13 @@ import com.qmonix.sdk.helpers.LogHelper;
 import com.qmonix.sdk.utils.Utils;
 
 /**
- * Holds all information that is necessary to send a valid event message to the Server. It has a
- * predefined client protocol version {@value PROTOCOL_VERSION}.
+ * Holds all information that is necessary to send a valid event message to the Server.
  * <p>
  * {@code EventMessage} collects event objects with a method {@code addEvent} and is able to
  * encode JSON formated legal event message with {@code toJson}.
  */
 public class EventMessage
 {
-	public static final String PROTOCOL_VERSION = "1.0";
-
 	private ArrayList<Event> eventList;
 
 	/**
@@ -59,7 +56,6 @@ public class EventMessage
 
 		long time_now = Utils.getUnixTime();
 
-		json.put("version", EventMessage.PROTOCOL_VERSION);
 		json.put("events", jsonEvents);
 		json.put("whenSent", time_now);
 
