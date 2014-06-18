@@ -21,6 +21,7 @@ import com.qmonix.sdk.TimingEvent;
 import com.qmonix.sdk.Event;
 import com.qmonix.sdk.DefaultEventDispatcher;
 import com.qmonix.sdk.exceptions.DefaultEventDispatcherException;
+import com.qmonix.sdk.QLog;
 
 
 public class MainActivity extends Activity implements OnItemSelectedListener {
@@ -64,6 +65,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
+		QLog.setLogLevel(QLog.DEBUG_LEVEL);
 		Tracker.init(new DefaultEventDispatcher("http://demo.qmonix.com/event/"));
 
 		this.eventScrollView = (ScrollView)this.findViewById(R.id.eventScrollView);
