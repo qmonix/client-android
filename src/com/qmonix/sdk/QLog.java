@@ -7,6 +7,9 @@ import android.util.Log;
  * Qmonix logging class that automates some logging tasks: it prints a log caller class,
  * method names, and line number, it stores and prints an application tag so user would not need to
  * tell it every time.
+ *
+ * Default logging level is INFO. You can change it with setLogLevel(). E.g.
+ * QLog.setLogLevel(QLog.DEBUG_LEVEL);
  */
 public class QLog {
 	static public int DEBUG_LEVEL = 0;
@@ -22,13 +25,13 @@ public class QLog {
 
 	static private int logLevel = INFO_LEVEL;
 
-
 	static public int debug(String msg) {
 		if (QLog.logLevel > DEBUG_LEVEL ) {
 			return 0;
 		}
 
 		StringBuilder log = QLog.getCallerInfo(2);
+		log.insert(0, "[DEBUG] ");
 		log.append(msg);
 		return Log.d(QLog.applicationTag, log.toString());
 	}
@@ -39,6 +42,7 @@ public class QLog {
 		}
 
 		StringBuilder log = QLog.getCallerInfo(2);
+		log.insert(0, "[INFO] ");
 		log.append(msg);
 		return Log.i(QLog.applicationTag, log.toString());
 	}
@@ -49,6 +53,7 @@ public class QLog {
 		}
 
 		StringBuilder log = QLog.getCallerInfo(2);
+		log.insert(0, "[WARNING] ");
 		log.append(msg);
 		return Log.w(QLog.applicationTag, log.toString());
 	}
@@ -66,6 +71,7 @@ public class QLog {
 		}
 
 		StringBuilder log = QLog.getCallerInfo(2);
+		log.insert(0, "[ERROR] ");
 		log.append(msg);
 		return Log.e(QLog.applicationTag, log.toString());
 	}
@@ -118,7 +124,7 @@ public class QLog {
 	 * @return log caller information string.
 	 */
 	static private StringBuilder getCallerInfo(int level) {
-		StringBuilder callerInfo = new StringBuilder();
+		StringBuilder result = new StringBuilder();
 
 		try {
 			throw new Exception();
@@ -126,23 +132,23 @@ public class QLog {
 			StackTraceElement ste = e.getStackTrace()[level];
 
 			if (QLog.logClass) {
-				callerInfo.append(ste.getClassName());
+				result.append(ste.getClassName());
 			}
 
 			if (QLog.logMethod) {
-				callerInfo.append(".");
-				callerInfo.append(ste.getMethodName());
-				callerInfo.append("()");
+				result.append(".");
+				result.append(ste.getMethodName());
+				result.append("()");
 			}
 
 			if (QLog.logLineNr) {
-				callerInfo.append(":");
-				callerInfo.append(ste.getLineNumber());
+				result.append(":");
+				result.append(ste.getLineNumber());
 			}
 
-			callerInfo.append(": ");
+			result.append(": ");
 		}
 
-		return callerInfo;
+		return result;
 	}
 }
