@@ -28,9 +28,9 @@ public class QLog {
 			return 0;
 		}
 
-		String callerInfo = QLog.getCallerInfo(2);
-		msg = callerInfo + msg;
-		return Log.d(QLog.applicationTag, msg);
+		StringBuilder log = QLog.getCallerInfo(2);
+		log.append(msg);
+		return Log.d(QLog.applicationTag, log.toString());
 	}
 
 	static public int info(String msg) {
@@ -38,9 +38,9 @@ public class QLog {
 			return 0;
 		}
 
-		String callerInfo = QLog.getCallerInfo(2);
-		msg = callerInfo + msg;
-		return Log.i(QLog.applicationTag, msg);
+		StringBuilder log = QLog.getCallerInfo(2);
+		log.append(msg);
+		return Log.i(QLog.applicationTag, log.toString());
 	}
 
 	static public int warning(String msg) {
@@ -48,9 +48,9 @@ public class QLog {
 			return 0;
 		}
 
-		String callerInfo = QLog.getCallerInfo(2);
-		msg = callerInfo + msg;
-		return Log.w(QLog.applicationTag, msg);
+		StringBuilder log = QLog.getCallerInfo(2);
+		log.append(msg);
+		return Log.w(QLog.applicationTag, log.toString());
 	}
 
 	/**
@@ -65,9 +65,9 @@ public class QLog {
 			return 0;
 		}
 
-		String callerInfo = QLog.getCallerInfo(2);
-		msg = callerInfo + msg;
-		return Log.e(QLog.applicationTag, msg);
+		StringBuilder log = QLog.getCallerInfo(2);
+		log.append(msg);
+		return Log.e(QLog.applicationTag, log.toString());
 	}
 
 	/**
@@ -117,8 +117,8 @@ public class QLog {
 	 * @param level caller level in function call stack.
 	 * @return log caller information string.
 	 */
-	static private String getCallerInfo(int level) {
-		String callerInfo = "";
+	static private StringBuilder getCallerInfo(int level) {
+		StringBuilder callerInfo = new StringBuilder();
 
 		try {
 			throw new Exception();
@@ -126,18 +126,21 @@ public class QLog {
 			StackTraceElement ste = e.getStackTrace()[level];
 
 			if (QLog.logClass) {
-				callerInfo += ste.getClassName();
+				callerInfo.append(ste.getClassName());
 			}
 
 			if (QLog.logMethod) {
-				callerInfo += "." + ste.getMethodName() + "()";
+				callerInfo.append(".");
+				callerInfo.append(ste.getMethodName());
+				callerInfo.append("()");
 			}
 
 			if (QLog.logLineNr) {
-				callerInfo += ":" + Integer.toString(ste.getLineNumber());
+				callerInfo.append(":");
+				callerInfo.append(ste.getLineNumber());
 			}
 
-			callerInfo += ": ";
+			callerInfo.append(": ");
 		}
 
 		return callerInfo;
