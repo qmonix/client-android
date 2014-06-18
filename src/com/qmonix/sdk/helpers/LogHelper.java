@@ -1,9 +1,7 @@
 package com.qmonix.sdk.helpers;
 
-import java.lang.String;
-
 import android.util.Log;
-import java.lang.StackTraceElement;
+
 
 /**
  * This log helper automates some logging tasks: it prints a log caller class, method names, and
@@ -19,6 +17,7 @@ public class LogHelper
 
 	public static final String applicationTag = "QMONIX";
 
+
 	/**
 	 * Depending on set features returns a log caller information: caller class and/or method
 	 * name.
@@ -26,16 +25,12 @@ public class LogHelper
 	 * @param level	caller level in function call stack.
 	 * @return log caller information string.
 	 */
-	static private String getCallerInfo(int level)
-	{
+	static private String getCallerInfo(int level) {
 		String callerInfo = "";
 
-		try
-		{
+		try{
 			throw new Exception();
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			StackTraceElement ste = e.getStackTrace()[level];
 
 			if (LogHelper.outputCallerClassName == true)
@@ -48,8 +43,7 @@ public class LogHelper
 				callerInfo += "." + ste.getMethodName() + "()";
 			}
 
-			if (LogHelper.outputCallerLineNumber == true)
-			{
+			if (LogHelper.outputCallerLineNumber == true) {
 				callerInfo += ":" + Integer.toString(ste.getLineNumber());
 			}
 
@@ -63,13 +57,11 @@ public class LogHelper
 	 * Sends verbose log message if verbose logging is ON. Adds additional info like caller
 	 * class and method names if this feature is turned ON (default).
 	 *
-	 * @param msg	log message.
+	 * @param msg log message.
 	 * @return bytes written to output.
- 	 */
-	static public int v(String msg)
-	{
-		if (LogHelper.verboseOn == false)
-		{
+	 */
+	static public int v(String msg) {
+		if (LogHelper.verboseOn == false) {
 			return 0;
 		}
 
@@ -82,13 +74,11 @@ public class LogHelper
 	 * Sends error log message if verbose logging is ON. Adds additional info like caller
 	 * class and method names if this feature is turned ON (default).
 	 *
-	 * @param msg	log message.
+	 * @param msg log message.
 	 * @return bytes written to output.
  	 */
-	static public int e(String msg)
-	{
-		if (LogHelper.errorOn == false)
-		{
+	static public int e(String msg) {
+		if (LogHelper.errorOn == false) {
 			return 0;
 		}
 
@@ -100,50 +90,45 @@ public class LogHelper
 	/**
 	 * Turns verbose logging on or off.
 	 *
-	 * @param verbose	true if verbose logging is to be turned on, otherwise false.
+	 * @param verbose true if verbose logging is to be turned on, otherwise false.
 	 */
-	static public void setVerboseOn(boolean verbose)
-	{
+	static public void setVerboseOn(boolean verbose) {
 		LogHelper.verboseOn = verbose;
 	}
 
 	/**
 	 * Turns error logging on or off.
 	 *
-	 * @param error	true if verbose logging is to be turned on, otherwise false.
+	 * @param error true if verbose logging is to be turned on, otherwise false.
 	 */
-	static public void setErrorOn(boolean error)
-	{
+	static public void setErrorOn(boolean error) {
 		LogHelper.errorOn = error;
 	}
 
 	/**
 	 * Turns on or off log caller class name printing together with log.
 	 *
-	 * @param on	true if log function should print class name, otherwise false.
+	 * @param on true if log function should print class name, otherwise false.
 	 */
-	static public void setCallerClassNameOn(boolean on)
-	{
+	static public void setCallerClassNameOn(boolean on) {
 		LogHelper.outputCallerClassName = on;
 	}
 
 	/**
 	 * Turns on or off log caller method name printing together with log.
 	 *
-	 * @param on	true if log function should print method name, otherwise false.
+	 * @param on true if log function should print method name, otherwise false.
 	 */
-	static public void setCallerMethodNameOn(boolean on)
-	{
+	static public void setCallerMethodNameOn(boolean on) {
 		LogHelper.outputCallerMethodName = on;
 	}
 
 	/**
 	 * Turns on or off log caller line number printing together with log.
 	 *
-	 * @param on	true if log function should print line number, otherwise false.
+	 * @param on true if log function should print line number, otherwise false.
 	 */
-	static public void setCallerLineNumberOn(boolean on)
-	{
+	static public void setCallerLineNumberOn(boolean on) {
 		LogHelper.outputCallerLineNumber = on;
 	}
 
