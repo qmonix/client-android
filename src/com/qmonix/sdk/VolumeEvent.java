@@ -12,9 +12,9 @@ import com.qmonix.sdk.EventDispatcher;
 import com.qmonix.sdk.Tracker;
 
 import com.qmonix.sdk.utils.Utils;
-import com.qmonix.sdk.helpers.LogHelper;
 
 import com.qmonix.sdk.exceptions.IllegalEventStateException;
+
 
 /**
  * Volume event class extends {@link Event Event}. Besides tag name and time when it was fired,

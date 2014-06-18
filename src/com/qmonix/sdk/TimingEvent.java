@@ -13,7 +13,7 @@ import com.qmonix.sdk.Tracker;
 
 import com.qmonix.sdk.utils.Utils;
 import com.qmonix.sdk.exceptions.IllegalEventStateException;
-import com.qmonix.sdk.helpers.LogHelper;
+
 
 /**
  * Timing event is the event that is continuous in time, it has event start time and length. Timing

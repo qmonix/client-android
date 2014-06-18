@@ -5,7 +5,6 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import com.qmonix.sdk.helpers.LogHelper;
 import com.qmonix.sdk.utils.Utils;
 
 

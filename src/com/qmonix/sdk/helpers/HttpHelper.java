@@ -25,6 +25,7 @@ import java.io.IOException;
 
 import com.qmonix.sdk.helpers.exceptions.HttpHelperException;
 import com.qmonix.sdk.utils.AsyncTaskResult;
+import com.qmonix.sdk.QLog;
 
 
 /**
@@ -78,14 +79,13 @@ public class HttpHelper
 			else
 			{
 				Exception e = result.getError();
-				LogHelper.e(e.toString());
+				QLog.error(e.toString());
 				throw new HttpHelperException(e.toString());
 			}
 		}
 		catch(Exception e)
 		{
-
-			LogHelper.e(e.toString());
+			QLog.error(e.toString());
 			throw new HttpHelperException(e.toString());
 		}
 
@@ -120,19 +120,19 @@ public class HttpHelper
 		catch (UnsupportedEncodingException e)
 		{
 			String msg = "Creating http post body entity failed: " + e;
-			LogHelper.e(msg);
+			QLog.error(msg);
 			throw new HttpHelperException(msg);
 		}
 		catch (IOException e)
 		{
 			String msg = "Sending message failed: " + e;
-			LogHelper.e(msg);
+			QLog.error(msg);
 			throw new HttpHelperException(msg);
 		}
 		catch (Exception e)
 		{
 			String msg = "Unknown error: " + e;
-			LogHelper.e(msg);
+			QLog.error(msg);
 			throw new HttpHelperException(msg);
 		}
 
@@ -162,7 +162,7 @@ public class HttpHelper
 			}
 			catch (Exception e)
 			{
-				LogHelper.e(e.toString());
+				QLog.error(e.toString());
 				retval = new AsyncTaskResult<Object>(e);
 			}
 

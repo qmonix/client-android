@@ -9,7 +9,6 @@ import org.json.JSONException;
 import com.qmonix.sdk.EventDispatcher;
 
 import com.qmonix.sdk.helpers.HttpHelper;
-import com.qmonix.sdk.helpers.LogHelper;
 
 import com.qmonix.sdk.helpers.exceptions.HttpHelperException;
 import com.qmonix.sdk.exceptions.DefaultEventDispatcherException;
@@ -72,8 +71,7 @@ public class DefaultEventDispatcher implements EventDispatcher
 	 *
 	 * @param event event object.
 	 */
-	synchronized public void submit(Event event)
-	{
+	synchronized public void submit(Event event) {
 		this.eventMessage.addEvent(event);
 	}
 
@@ -81,35 +79,28 @@ public class DefaultEventDispatcher implements EventDispatcher
 	 * Sends all events to the Server, clears dispatcher event list. On failure throws
 	 * an exception. In such case events are not cleared, but one can do it manually with
 	 * {@link #dropEvents dropEvents}.
-	 *
-	 * @throws DefaultEventDispatcherException if fails to send events to the Server.
 	 */
-	synchronized public void sendToServer() throws DefaultEventDispatcherException
-	{
-		try
-		{
+	synchronized public void sendToServer() throws DefaultEventDispatcherException {
+		try {
 			String jsonEvent = this.eventMessage.toJson();
 
-			LogHelper.v(jsonEvent);
+			QLog.debug(jsonEvent);
 
 			this.httpHelper.uiPostMessage(jsonEvent);
 			this.dropEvents();
-		}
-		catch (JSONException e)
-		{
-			LogHelper.e(e.toString());
+
+		} catch (JSONException e) {
+			QLog.error(e.toString());
 			throw new DefaultEventDispatcherException("JSON encode exception.");
-		}
-		catch (HttpHelperException e)
-		{
-			LogHelper.e(e.toString());
+
+		} catch (HttpHelperException e) {
+			QLog.error(e.toString());
 			throw new DefaultEventDispatcherException("Error happened while sending " +
 				"events to the server.");
-		}
-		catch (Exception e)
-		{
+
+		} catch (Exception e) {
 			String msg = e.toString();
-			LogHelper.e(msg);
+			QLog.error(msg);
 			throw new DefaultEventDispatcherException("Unknown error: " + msg);
 		}
 	}
@@ -118,9 +109,7 @@ public class DefaultEventDispatcher implements EventDispatcher
 	 * Clears collected event list. In no case collected events are sent to the server. So
 	 * {@link #submit submit} is not invoked.
 	 */
-	synchronized public void dropEvents()
-	{
+	synchronized public void dropEvents() {
 		this.eventMessage = new EventMessage();
 	}
 }
-

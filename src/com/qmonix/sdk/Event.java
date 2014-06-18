@@ -10,9 +10,9 @@ import com.qmonix.sdk.EventDispatcher;
 import com.qmonix.sdk.Tracker;
 
 import com.qmonix.sdk.utils.Utils;
-import com.qmonix.sdk.helpers.LogHelper;
 
 import com.qmonix.sdk.exceptions.IllegalEventStateException;
+
 
 /**
  * Single event class that holds it's tag name and a and a single value - it's fire time. Every
