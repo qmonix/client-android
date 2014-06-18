@@ -35,10 +35,9 @@ import com.qmonix.sdk.exceptions.DefaultEventDispatcherException;
  * @see EventDispatcher
  * @see Event
  */
-public class DefaultEventDispatcher implements EventDispatcher
-{
-	private EventMessage eventMessage;
+public class DefaultEventDispatcher implements EventDispatcher {
 
+	private EventMessage eventMessage;
 	private HttpHelper httpHelper;
 
 
@@ -51,16 +50,13 @@ public class DefaultEventDispatcher implements EventDispatcher
 	 *	server hostname.
 	 */
 	public DefaultEventDispatcher(String eventUri) throws
-		DefaultEventDispatcherException
-	{
+		DefaultEventDispatcherException {
 		this.eventMessage = new EventMessage();
 
-		try
-		{
+		try {
 			this.httpHelper = new HttpHelper(eventUri);
-		}
-		catch (URISyntaxException e)
-		{
+
+		} catch (URISyntaxException e) {
 			throw new DefaultEventDispatcherException("Bad server URI.");
 		}
 	}
