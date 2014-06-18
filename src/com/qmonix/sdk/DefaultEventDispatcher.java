@@ -11,7 +11,6 @@ import com.qmonix.sdk.EventDispatcher;
 import com.qmonix.sdk.helpers.HttpHelper;
 
 import com.qmonix.sdk.helpers.exceptions.HttpHelperException;
-import com.qmonix.sdk.exceptions.DefaultEventDispatcherException;
 
 
 /**
@@ -30,8 +29,8 @@ import com.qmonix.sdk.exceptions.DefaultEventDispatcherException;
  * is going to bet sent to the server. Using this time stamp server is able to ajust collected
  * events time with server time. All events are eventually registered using server time.
  * <p>
- * {@link #sendToServer sendToServer}, {@link #submit submit}, {@link #dropEvents dropEvents} are
- * synchronized and safe to use in multiple threads.
+ * {@link #dispatch dispatch}, {@link #submit submit}, {@link #dropEvents dropEvents} are
+ * thread safe.
  *
  * @see EventDispatcher
  * @see Event
@@ -46,20 +45,13 @@ public class DefaultEventDispatcher implements EventDispatcher {
 	 * Creates new dispatcher object which sends collected events to the Server.
 	 * Uri to which events are sent must be specified in the parameters.
 	 *
-	 * @param eventUri server uri to which events must be posted.
-	 *	E.g. http://qmonix.com:8337/event/. qmonix.com should be replaced with your
-	 *	server hostname.
+	 * @param eventUri server uri to which events must be posted. E.g.
+	 *	http://qmonix.com:8337/event/. qmonix.com should be replaced with your server
+	 *	hostname.
 	 */
-	public DefaultEventDispatcher(String eventUri) throws
-		DefaultEventDispatcherException {
+	public DefaultEventDispatcher(String eventUri) throws URISyntaxException {
 		this.eventMessage = new EventMessage();
-
-		try {
-			this.httpHelper = new HttpHelper(eventUri);
-
-		} catch (URISyntaxException e) {
-			throw new DefaultEventDispatcherException("Bad server URI.");
-		}
+		this.httpHelper = new HttpHelper(eventUri);
 	}
 
 	/**
@@ -77,28 +69,26 @@ public class DefaultEventDispatcher implements EventDispatcher {
 	 * an exception. In such case events are not cleared, but one can do it manually with
 	 * {@link #dropEvents dropEvents}.
 	 */
-	synchronized public void sendToServer() throws DefaultEventDispatcherException {
+	synchronized public void dispatch(EventDispatchHandler handler) {
+		if (handler == null) {
+			throw new IllegalArgumentException("Dispatch handler cannot be null.");
+		}
+
 		try {
 			String jsonEvent = this.eventMessage.toJson();
-
 			QLog.debug(jsonEvent);
 
 			this.httpHelper.uiPostMessage(jsonEvent);
 			this.dropEvents();
+			handler.onSuccess();
 
 		} catch (JSONException e) {
-			QLog.error(e.toString());
-			throw new DefaultEventDispatcherException("JSON encode exception.");
+			String errMsg = "Failed to encode events to JSON: " + e.toString();
+			handler.onError(errMsg);
 
 		} catch (HttpHelperException e) {
-			QLog.error(e.toString());
-			throw new DefaultEventDispatcherException("Error happened while sending " +
-				"events to the server.");
-
-		} catch (Exception e) {
-			String msg = e.toString();
-			QLog.error(msg);
-			throw new DefaultEventDispatcherException("Unknown error: " + msg);
+			String errMsg = "Failed to send events to server: " + e.toString();
+			handler.onError(errMsg);
 		}
 	}
 
