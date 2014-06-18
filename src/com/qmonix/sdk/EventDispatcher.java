@@ -23,7 +23,7 @@ public interface EventDispatcher
 	/**
 	 * Send, store, print collected events.
 	 *
-	 * @param handler successful or failed dispatch handler. Might be null.
+	 * @param handler successful or failed dispatch handler.
 	 */
 	public void dispatch(EventDispatchHandler handler);
 }
