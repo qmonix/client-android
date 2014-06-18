@@ -1,41 +1,39 @@
 package com.qmonix.sdk.utils;
 
+
 /**
  * Class that holds information for AsyncTask.doInBackground() result. It might be either
  * a valid result or an exception.
  */
-public class AsyncTaskResult<T>
-{
+public class AsyncTaskResult<T> {
+
 	private T result;
 	private Exception error;
+
 
 	/**
 	 * Constructs a valid result object.
 	 *
-	 * @param result	AsyncTask.doInBackground() method result.
+	 * @param result AsyncTask.doInBackground() method result.
 	 */
-	public AsyncTaskResult(T result)
-	{
+	public AsyncTaskResult(T result) {
 		this.result = result;
 	}
 
 	/**
 	 * Constructs a result object that indicates an exception.
 	 *
-	 * @param error	exception object that was thrown during AsyncTask.doInBackground().
+	 * @param error exception object that was thrown during AsyncTask.doInBackground().
 	 */
-	public AsyncTaskResult(Exception error)
-	{
+	public AsyncTaskResult(Exception error) {
 		this.error = error;
 	}
 
-	public T getResult()
-	{
+	public T getResult() {
 		return this.result;
 	}
 
-	public Exception getError()
-	{
+	public Exception getError() {
 		return this.error;
 	}
 
@@ -44,14 +42,11 @@ public class AsyncTaskResult<T>
 	 *
 	 * @return true if object is an excetion, otherwise false.
 	 */
-	public boolean isException()
-	{
-		if (this.error != null)
-		{
+	public boolean isException() {
+		if (this.error != null){
 			return true;
-		}
-		else
-		{
+
+		} else {
 			return false;
 		}
 	}
@@ -63,16 +58,12 @@ public class AsyncTaskResult<T>
 	 *
 	 * @return true if object is a valid result, otherise false.
 	 */
-	public boolean isValidResult()
-	{
-		if (this.result != null)
-		{
+	public boolean isValidResult() {
+		if (this.result != null) {
 			return true;
-		}
-		else
-		{
+
+		} else{
 			return false;
 		}
 	}
 }
-

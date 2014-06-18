@@ -1,9 +1,5 @@
 package com.qmonix.sdk;
 
-import java.lang.String;
-import java.lang.RuntimeException;
-import java.lang.IllegalArgumentException;
-
 import org.json.JSONObject;
 import org.json.JSONException;
 
@@ -32,8 +28,8 @@ import com.qmonix.sdk.exceptions.IllegalEventStateException;
  * @see EventDispatcher
  * @see exceptions.IllegalEventStateException
  */
-public class VolumeEvent extends Event
-{
+public class VolumeEvent extends Event {
+
 	private State state = State.INITIAL;
 	private long volume;
 
@@ -45,12 +41,10 @@ public class VolumeEvent extends Event
 	 * @param volume event volume. Positive number.
 	 * @throws IllegalArgumentException if volume is negative number.
 	 */
-	public VolumeEvent(String tag, long volume)
-	{
+	public VolumeEvent(String tag, long volume) {
 		super(tag);
 
-		if (volume < 0)
-		{
+		if (volume < 0) {
 			String msg = "Event volume must be positive integer.";
 			throw new IllegalArgumentException(msg);
 		}
@@ -64,8 +58,7 @@ public class VolumeEvent extends Event
 	 *
 	 * @return event volume.
 	 */
-	public long getVolume()
-	{
+	public long getVolume() {
 		return this.volume;
 	}
 
@@ -76,10 +69,8 @@ public class VolumeEvent extends Event
 	 * @param volume event volume.
 	 * @throws IllegalArgumentException if volume is negative number.
 	 */
-	public void setVolume(long volume)
-	{
-		if (volume < 0)
-		{
+	public void setVolume(long volume) {
+		if (volume < 0) {
 			String msg = "Event volume must be positive integer.";
 			throw new IllegalArgumentException(msg);
 		}
@@ -95,8 +86,7 @@ public class VolumeEvent extends Event
 	 * @return event encoded in JSON format.
 	 * @throws JSONException if fails to encode event message to JSON object.
 	 */
-	public JSONObject toJson() throws JSONException
-	{
+	public JSONObject toJson() throws JSONException {
 		JSONObject json = super.toJson();
 		json.put("volume", this.volume);
 
@@ -114,8 +104,7 @@ public class VolumeEvent extends Event
 	 * information.
 	 * </ul>
 	 */
-	private enum State
-	{
+	private enum State {
 		INITIAL, FIRED
 	}
 }

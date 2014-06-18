@@ -29,8 +29,7 @@ import com.qmonix.sdk.exceptions.IllegalEventStateException;
  * @see EventDispatcher
  * @see exceptions.IllegalEventStateException
  */
-public class Event
-{
+public class Event {
 	private State state = State.INITIAL;
 
 	protected long timeArised = TimeInterval.UNINITIALIZED_TIME;
@@ -41,16 +40,18 @@ public class Event
 	 *
 	 * @param tag event tag name.
 	 */
-	public Event(String tag)
-	{
+	public Event(String tag) {
+		if (tag == null) {
+			throw new IllegalArgumentException("Tag name cannot be null.");
+		}
+
 		this.tag = tag;
 	}
 
 	/**
 	 * @return event tag name.
 	 */
-	public String getTag()
-	{
+	public String getTag() {
 		return this.tag;
 	}
 
@@ -59,8 +60,7 @@ public class Event
 	 *
 	 * @return event fire time.
 	 */
-	public long getTimeArised()
-	{
+	public long getTimeArised() {
 		return this.timeArised;
 	}
 
@@ -68,14 +68,9 @@ public class Event
 	 * Captures single event fire time. After this method is called event must be in unusable
 	 * state. Meaning it should not be fired anymore or change it's state in any way.
 	 * Otherwise the exception should be thrown.
-	 *
-	 * @throws IllegalEventStateException if {@code fire} is invoked more than once for the same
-	 *	object.
 	 */
-	public void fire() throws IllegalEventStateException
-	{
-		if (this.state != State.INITIAL)
-		{
+	public void fire() throws IllegalEventStateException {
+		if (this.state != State.INITIAL) {
 			String msg = "event cannot be fired more than once";
 			throw new IllegalEventStateException(msg);
 		}
@@ -93,8 +88,7 @@ public class Event
 	 * @return event encoded in JSON format.
 	 * @throws JSONException if fails to encode event message to JSON object.
 	 */
-	public JSONObject toJson() throws JSONException
-	{
+	public JSONObject toJson() throws JSONException {
 		JSONObject json = new JSONObject();
 		json.put("tag", this.getTag());
 		json.put("whenArised", this.getTimeArised());
@@ -112,8 +106,7 @@ public class Event
 	 * information.
 	 * </ul>
 	 */
-	private enum State
-	{
+	private enum State {
 		INITIAL, FIRED
 	}
 }

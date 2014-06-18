@@ -50,6 +50,7 @@ import com.qmonix.sdk.exceptions.UninitializedTrackerException;
  * @see UninitializedTrackerException
  */
 public class Tracker {
+
 	private static EventDispatcher dispatcher;
 
 	/**

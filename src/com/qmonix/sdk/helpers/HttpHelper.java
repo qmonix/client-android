@@ -1,7 +1,5 @@
 package com.qmonix.sdk.helpers;
 
-import java.lang.String;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -34,8 +32,8 @@ import com.qmonix.sdk.QLog;
  * {@link android.os.NetworkOnMainThreadException NetworkOnMainThreadException}. Otherwise it is
  * advised to use {@link #postMessage postMessage}.
  */
-public class HttpHelper
-{
+public class HttpHelper {
+
 	private String hostname;
 	private int port;
 	private URI httpPostUri;
@@ -46,10 +44,8 @@ public class HttpHelper
 	 *
 	 * @param uri server url.
 	 */
-	public HttpHelper(String uri) throws URISyntaxException
-	{
+	public HttpHelper(String uri) throws URISyntaxException {
 		this.httpPostUri = new URI(uri);
-
 		this.hostname = this.httpPostUri.getHost();
 		this.port = this.httpPostUri.getPort();
 	}
@@ -58,33 +54,27 @@ public class HttpHelper
 	 * Does the same as postMessage() except it allows to do network operations on main UI
 	 * thread.
 	 *
-	 * @param message	message to bet sent to the server.
+	 * @param message message to bet sent to the server.
 	 * @return response from the server.
-	 * @throws HttpHelperException if fails to send post message.
 	 * @see #postMessage
 	 */
-	public String uiPostMessage(String message) throws HttpHelperException
-	{
+	public String uiPostMessage(String message) throws HttpHelperException {
 		String response = "";
 
 		PostHttpMessage postHttp = new PostHttpMessage();
 		postHttp.execute(message);
-		try
-		{
+		try {
 			AsyncTaskResult<Object> result = postHttp.get();
-			if (result.isException() == false)
-			{
+			if (result.isException() == false) {
 				response = (String)result.getResult();
-			}
-			else
-			{
+
+			} else {
 				Exception e = result.getError();
 				QLog.error(e.toString());
 				throw new HttpHelperException(e.toString());
 			}
-		}
-		catch(Exception e)
-		{
+
+		} catch(Exception e) {
 			QLog.error(e.toString());
 			throw new HttpHelperException(e.toString());
 		}
@@ -96,41 +86,35 @@ public class HttpHelper
 	 * Synchronously sends a HTTP POST message meaning that method waits until it receives
 	 * a response. The response message is returned. Assumes that a content is in JSON.
 	 *
-	 * @param message	message to bet sent to the server.
+	 * @param message message to bet sent to the server.
 	 * @return response from the server.
-	 * @throws HttpHelperException if fails to send post message.
 	 */
-	public String postMessage(String message) throws HttpHelperException
-	{
+	public String postMessage(String message) throws HttpHelperException {
 		HttpHost httpHost = new HttpHost(this.hostname, this.port, "http");
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost httpPost = new HttpPost(this.httpPostUri);
 		ResponseHandler<String> responseHandler = new BasicResponseHandler();
 		String httpResponse = "";
 
-		try
-		{
+		try {
 			StringEntity se = new StringEntity(message);
 			httpPost.setEntity(se);
 			httpPost.setHeader("Accept", "application/json");
 			httpPost.setHeader("Content-type","application/json");
 
 			httpResponse = httpClient.execute(httpHost, httpPost, responseHandler);
-		}
-		catch (UnsupportedEncodingException e)
-		{
+
+		} catch (UnsupportedEncodingException e) {
 			String msg = "Creating http post body entity failed: " + e;
 			QLog.error(msg);
 			throw new HttpHelperException(msg);
-		}
-		catch (IOException e)
-		{
+
+		} catch (IOException e) {
 			String msg = "Sending message failed: " + e;
 			QLog.error(msg);
 			throw new HttpHelperException(msg);
-		}
-		catch (Exception e)
-		{
+
+		} catch (Exception e) {
 			String msg = "Unknown error: " + e;
 			QLog.error(msg);
 			throw new HttpHelperException(msg);
@@ -143,25 +127,22 @@ public class HttpHelper
 	 * This is a helper class that allows to do network operations on the main UI thread.
 	 * It extends AsyncTask class which handles all thread associated activities.
 	 */
-	private class PostHttpMessage extends AsyncTask<String, Void, AsyncTaskResult<Object>>
-	{
+	private class PostHttpMessage extends AsyncTask<String, Void, AsyncTaskResult<Object>> {
+
 		/**
 		 * Sends http POST message.
 		 *
 		 * @param msgs	http messages to send. Only first array element, msgs[0], is used.
 		 * @return http response message on success, exception on failure.
 		 */
-		protected AsyncTaskResult<Object> doInBackground(String... msgs)
-		{
+		protected AsyncTaskResult<Object> doInBackground(String... msgs) {
 			AsyncTaskResult<Object> retval;
 
-			try
-			{
+			try{
 				String httpResponse = HttpHelper.this.postMessage(msgs[0]);
 				retval = new AsyncTaskResult<Object>(httpResponse);
-			}
-			catch (Exception e)
-			{
+
+			} catch (Exception e) {
 				QLog.error(e.toString());
 				retval = new AsyncTaskResult<Object>(e);
 			}

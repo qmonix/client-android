@@ -1,6 +1,5 @@
 package com.qmonix.sdk.helpers.exceptions;
 
-import java.lang.String;
 
 /**
  * Exception that is thrown when error occurs while doing HTTP related operations.
@@ -10,18 +9,18 @@ import java.lang.String;
  *
  * @see com.qmonix.sdk.helpers.HttpHelper
  */
-public class HttpHelperException extends Exception
-{
+public class HttpHelperException extends Exception {
+
 	/* @see java.io.Serializable */
 	private static final long serialVersionUID = 1;
+
 
 	/**
 	 * Constructs new exception object with the current stack trace and specified error message.
 	 *
 	 * @param detailMessage the detail message for this exception.
 	 */
-	public HttpHelperException(String detailMessage)
-	{
+	public HttpHelperException(String detailMessage) {
 		super(detailMessage);
 	}
 }

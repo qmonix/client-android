@@ -14,8 +14,8 @@ import com.qmonix.sdk.utils.Utils;
  * {@code EventMessage} collects event objects with a method {@code addEvent} and is able to
  * encode JSON formated legal event message with {@code toJson}.
  */
-public class EventMessage
-{
+public class EventMessage {
+
 	private ArrayList<Event> eventList = new ArrayList<Event>();
 
 
@@ -26,6 +26,10 @@ public class EventMessage
 	 * @see Event
 	 */
 	public void addEvent(Event event) {
+		if (event == null) {
+			throw new IllegalArgumentException("Event cannot be null.");
+		}
+
 		this.eventList.add(event);
 	}
 
