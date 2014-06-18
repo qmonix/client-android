@@ -13,6 +13,7 @@ import com.qmonix.sdk.helpers.HttpHelper;
 import com.qmonix.sdk.helpers.exceptions.HttpHelperException;
 import com.qmonix.sdk.exceptions.DefaultEventDispatcherException;
 
+
 /**
  * Default event dispatcher which collects events and sends them to the Server. Server address name
  * and port are specified in constructor.
