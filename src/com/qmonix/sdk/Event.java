@@ -1,17 +1,9 @@
 package com.qmonix.sdk;
 
-import java.lang.String;
-import java.lang.RuntimeException;
-
 import org.json.JSONObject;
 import org.json.JSONException;
 
-import com.qmonix.sdk.EventDispatcher;
-import com.qmonix.sdk.Tracker;
-
 import com.qmonix.sdk.utils.Utils;
-
-import com.qmonix.sdk.exceptions.IllegalEventStateException;
 
 
 /**
@@ -30,10 +22,12 @@ import com.qmonix.sdk.exceptions.IllegalEventStateException;
  * @see exceptions.IllegalEventStateException
  */
 public class Event {
-	private State state = State.INITIAL;
 
-	protected long timeArised = TimeInterval.UNINITIALIZED_TIME;
+	private boolean fired = false;
+
+	protected long timeArised;
 	protected String tag;
+
 
 	/**
 	 * Constructs new single event with a specified tag name.
@@ -65,20 +59,22 @@ public class Event {
 	}
 
 	/**
-	 * Captures single event fire time. After this method is called event must be in unusable
-	 * state. Meaning it should not be fired anymore or change it's state in any way.
-	 * Otherwise the exception should be thrown.
+	 * Captures single event fire time. Event can be fired only once.
+	 *
+	 * @return true if event is successful fired, false if it was already fired.
 	 */
-	public void fire() throws IllegalEventStateException {
-		if (this.state != State.INITIAL) {
-			String msg = "event cannot be fired more than once";
-			throw new IllegalEventStateException(msg);
+	public boolean fire() {
+		boolean result = false;
+
+		if (!this.fired) {
+			this.timeArised = Utils.getUnixTime();
+			this.fired = true;
+			Tracker.getDispatcher().submit(this);
+
+			result = true;
 		}
 
-		this.timeArised = Utils.getUnixTime();
-		this.state = State.FIRED;
-
-		Tracker.getDispatcher().submit(this);
+		return result;
 	}
 
 	/**
@@ -94,19 +90,5 @@ public class Event {
 		json.put("whenArised", this.getTimeArised());
 
 		return json;
-	}
-
-	/**
-	 * All possible single event states.
-	 * <ul>
-	 * <li> {@code INITIAL} - when single event object is just created. It's fire time is
-	 * {@value TimeInterval.UNINITIALIZED_TIME}.
-	 * <li> {@code FIRED} - event becomes fired after {@code fire} is invoked. In this state
-	 * event cannot be fired anymore. It can only remain in this state and be used to store
-	 * information.
-	 * </ul>
-	 */
-	private enum State {
-		INITIAL, FIRED
 	}
 }
