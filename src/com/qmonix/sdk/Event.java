@@ -12,14 +12,9 @@ import com.qmonix.sdk.utils.Utils;
  * same names but their collected information will be aggregated. Event tag name might be retrieved
  * by {@link #getTag getTag}. {@link #getTimeArised getTimeArised} returns event fire time.
  * <p>
- * {@link #fire fire} captures event fire time which cannot be changed in the future. After firing
- * an event, it becomes unusable. If one tries to invoke {@link #fire fire} more than once, the
- * exception will be thrown.
- * <p>
  * {@link #toJson toJson} encodes event information to JSON object.
  *
  * @see EventDispatcher
- * @see exceptions.IllegalEventStateException
  */
 public class Event {
 
@@ -30,16 +25,19 @@ public class Event {
 
 
 	/**
-	 * Constructs new single event with a specified tag name.
+	 * Constructs new single event with a specified tag name and Unix time stamp when it was
+	 * fired.
 	 *
 	 * @param tag event tag name.
+	 * @param timeArised time when event was fired.
 	 */
-	public Event(String tag) {
+	public Event(String tag, long timeArised) {
 		if (tag == null) {
 			throw new IllegalArgumentException("Tag name cannot be null.");
 		}
 
 		this.tag = tag;
+		this.timeArised = timeArised;
 	}
 
 	/**
@@ -56,25 +54,6 @@ public class Event {
 	 */
 	public long getTimeArised() {
 		return this.timeArised;
-	}
-
-	/**
-	 * Captures single event fire time. Event can be fired only once.
-	 *
-	 * @return true if event is successful fired, false if it was already fired.
-	 */
-	public boolean fire() {
-		boolean result = false;
-
-		if (!this.fired) {
-			this.timeArised = Utils.getUnixTime();
-			this.fired = true;
-			Tracker.getDispatcher().submit(this);
-
-			result = true;
-		}
-
-		return result;
 	}
 
 	/**
