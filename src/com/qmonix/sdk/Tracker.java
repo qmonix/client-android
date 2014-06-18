@@ -6,6 +6,7 @@ import com.qmonix.sdk.utils.Utils;
 
 import com.qmonix.sdk.exceptions.UninitializedTrackerException;
 
+
 /**
  * Main event tracking class. It has static methods to track single and create timing events. Events
  * are identified by their unique tag name. Each different event has a different tag name. It is up
@@ -48,25 +49,21 @@ import com.qmonix.sdk.exceptions.UninitializedTrackerException;
  * @see DefaultEventDispatcher
  * @see UninitializedTrackerException
  */
-public class Tracker
-{
+public class Tracker {
 	private static EventDispatcher dispatcher;
 
 	/**
 	 * Prevents from instantiating this class.
 	 */
-	private Tracker()
-	{
+	private Tracker() {
 	}
 
 	/**
 	 * Checks if {@code Tracker} singleton was initialized. If it was, returns silently,
 	 * otherwise exception is thrown.
 	 */
-	private static void checkInitialized()
-	{
-		if (Tracker.dispatcher == null)
-		{
+	private static void checkInitialized() {
+		if (Tracker.dispatcher == null) {
 			String msg = "Tracker was not initialized";
 			throw new UninitializedTrackerException(msg);
 		}
@@ -80,8 +77,7 @@ public class Tracker
 	 *
 	 * @param dispatcher event dispatcher object.
 	 */
-	public static void init(EventDispatcher dispatcher)
-	{
+	public static void init(EventDispatcher dispatcher) {
 		Tracker.dispatcher = dispatcher;
 	}
 
@@ -94,8 +90,7 @@ public class Tracker
 	 * @throws UninitializedTrackerException if {@link #init} was never invoked.
 	 * @see #init
 	 */
-	public static void fire(String tag, long volume)
-	{
+	public static void fire(String tag, long volume) {
 		checkInitialized();
 		VolumeEvent event = new VolumeEvent(tag, volume);
 		event.fire();
@@ -110,8 +105,7 @@ public class Tracker
 	 * @throws UninitializedTrackerException if {@link #init} was never invoked.
 	 * @see #init
 	 */
-	public static void fire(String tag)
-	{
+	public static void fire(String tag) {
 		checkInitialized();
 		Event event = new Event(tag);
 		event.fire();
@@ -128,8 +122,7 @@ public class Tracker
 	 * @throws UninitializedTrackerException if {@link #init} was never invoked.
 	 * @see #init
 	 */
-	public static TimingEvent start(String tag)
-	{
+	public static TimingEvent start(String tag) {
 		checkInitialized();
 		TimingEvent newEvent = new TimingEvent(tag);
 		newEvent.start();
@@ -143,8 +136,7 @@ public class Tracker
 	 *
 	 * @param dispatcher new dispatcher.
 	 */
-	public static void setDispatcher(EventDispatcher dispatcher)
-	{
+	public static void setDispatcher(EventDispatcher dispatcher) {
 		Tracker.dispatcher = dispatcher;
 	}
 
@@ -156,10 +148,8 @@ public class Tracker
 	 * @throws UninitializedTrackerException if {@link #init} was never invoked.
 	 * @see #init
 	 */
-	public static EventDispatcher getDispatcher()
-	{
+	public static EventDispatcher getDispatcher() {
 		checkInitialized();
 		return Tracker.dispatcher;
 	}
 }
-
