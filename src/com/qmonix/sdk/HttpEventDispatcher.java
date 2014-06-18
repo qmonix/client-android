@@ -7,21 +7,19 @@ import java.net.URISyntaxException;
 import org.json.JSONException;
 
 import com.qmonix.sdk.EventDispatcher;
-
 import com.qmonix.sdk.helpers.HttpHelper;
-
 import com.qmonix.sdk.helpers.exceptions.HttpHelperException;
 
 
 /**
- * Default event dispatcher which collects events and sends them to the Server. Server address name
- * and port are specified in constructor.
+ * Event dispatcher which collects events and sends them to the Qmonix Web service over HTTP.
+ * Server address name and port are specified in constructor.
  * <p>
  * Server address and port number must conform to TCP/IP addressing scheme. Domain name also might
  * be used as an address, e.g. example.com.
  * <p>
  * {@link #submit submit} inserts new event to the collected event list. It accepts {@link Event}
- * object which describes specific event. {@link #sendToServer sendToServer} sends those collected
+ * object which describes specific event. {@link #dispatch dispatch} sends those collected
  * events to the Server and clears event list. {@link #dropEvents dropEvents} clears collected event
  * list without dispatching them to the Server.
  * <p>
@@ -35,7 +33,7 @@ import com.qmonix.sdk.helpers.exceptions.HttpHelperException;
  * @see EventDispatcher
  * @see Event
  */
-public class DefaultEventDispatcher implements EventDispatcher {
+public class HttpEventDispatcher implements EventDispatcher {
 
 	private EventMessage eventMessage;
 	private HttpHelper httpHelper;
@@ -49,14 +47,14 @@ public class DefaultEventDispatcher implements EventDispatcher {
 	 *	http://qmonix.com:8337/event/. qmonix.com should be replaced with your server
 	 *	hostname.
 	 */
-	public DefaultEventDispatcher(String eventUri) throws URISyntaxException {
+	public HttpEventDispatcher(String eventUri) throws URISyntaxException {
 		this.eventMessage = new EventMessage();
 		this.httpHelper = new HttpHelper(eventUri);
 	}
 
 	/**
 	 * Adds event to the collected event list. Does not send events to the server. To send
-	 * collected events use {@code sendToServer}.
+	 * collected events use {@code dispatch}.
 	 *
 	 * @param event event object.
 	 */
