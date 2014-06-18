@@ -7,8 +7,8 @@ import android.util.Log;
  * This log helper automates some logging tasks: it prints a log caller class, method names, and
  * line number, it stores and prints an application tag so user would not need to tell it every time.
  */
-public class LogHelper
-{
+@Deprecated
+public class LogHelper {
 	static private boolean outputCallerClassName = true;
 	static private boolean outputCallerMethodName = true;
 	static private boolean outputCallerLineNumber = true;
