@@ -1,6 +1,7 @@
 package com.qmonix.sample.basic;
 
 import java.util.HashMap;
+import java.net.URISyntaxException;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -17,14 +18,15 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.EditText;
 
 import com.qmonix.sdk.Tracker;
-import com.qmonix.sdk.TimingEvent;
+import com.qmonix.sdk.FireableTimingEvent;
 import com.qmonix.sdk.Event;
-import com.qmonix.sdk.DefaultEventDispatcher;
-import com.qmonix.sdk.exceptions.DefaultEventDispatcherException;
+import com.qmonix.sdk.HttpEventDispatcher;
+import com.qmonix.sdk.EventDispatchHandler;
 import com.qmonix.sdk.QLog;
 
 
 public class MainActivity extends Activity implements OnItemSelectedListener {
+
 	private static final String EVENTS_LIST_CAPTION = "Events to dispatch:\n";
 
 	// UI controls.
@@ -44,10 +46,11 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
 	private String singleEventDefaultTag = "qmonix/android/sample/basic/single_event";
 	private String timingEventTagBase = "qmonix/android/sample/basic/timing_event";
 
-	private HashMap<String, TimingEvent> timingEvents = new HashMap<String, TimingEvent>();
+	private HashMap<String, FireableTimingEvent> timingEvents = new HashMap<String,
+		FireableTimingEvent>();
 	private HashMap<String, String> timingEventsState = new HashMap<String, String>();
 
-	private TimingEvent selectedTimingEvent;
+	private FireableTimingEvent selectedTimingEvent;
 
 	private String logText = "";
 	private int logElementId = 0;
@@ -66,7 +69,14 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
 		setContentView(R.layout.main);
 
 		QLog.setLogLevel(QLog.DEBUG_LEVEL);
-		Tracker.init(new DefaultEventDispatcher("http://demo.qmonix.com/event/"));
+		try {
+			Tracker.setDispatcher(new HttpEventDispatcher(
+				"http://demo.qmonix.com/event/"));
+
+		} catch (URISyntaxException e) {
+			this.log("Failed to create HTTP event dispatcher: " + e.getMessage());
+			this.log("Using default event dispatcher.");
+		}
 
 		this.eventScrollView = (ScrollView)this.findViewById(R.id.eventScrollView);
 		this.logScrollView = (ScrollView)this.findViewById(R.id.logScrollView);
@@ -114,16 +124,18 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
 	public void onDispatchClick(View view) {
 		this.log("Dispatching events...");
 
-		DefaultEventDispatcher dispatcher = (DefaultEventDispatcher)Tracker.getDispatcher();
-		try {
-			dispatcher.sendToServer();
+		Tracker.getDispatcher().dispatch(new EventDispatchHandler() {
+			@Override
+			public void onSuccess() {
+				MainActivity.this.log("Events were successfully sent to the server.");
+				MainActivity.this.eventsText.setText(EVENTS_LIST_CAPTION);
+			}
 
-			this.log("Events were successfully sent to the server.");
-			eventsText.setText(this.EVENTS_LIST_CAPTION);
-
-		} catch (DefaultEventDispatcherException e) {
-			this.log("Failed to dispatch events: " + e.getMessage());
-		}
+			@Override
+			public void onError(String errorMessage) {
+				MainActivity.this.log("Failed to dispatch events: " + errorMessage);
+			}
+		});
 	}
 
 	/**
@@ -137,7 +149,7 @@ public class MainActivity extends Activity implements OnItemSelectedListener {
 		this.newTimingEventId += 1;
 		String tag = this.timingEventTagBase + Integer.toString(this.newTimingEventId);
 
-		TimingEvent event = Tracker.start(tag);
+		FireableTimingEvent event = Tracker.start(tag);
 		this.timingEvents.put(tag, event);
 		this.timingEventsState.put(tag, "running");
 		this.timingEventAdapter.add(tag);
