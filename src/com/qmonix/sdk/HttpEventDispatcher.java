@@ -31,6 +31,7 @@ import com.qmonix.sdk.helpers.exceptions.HttpHelperException;
  *
  * @see EventDispatcher
  * @see Event
+ * @TODO: remove synchronization elements.
  */
 public class HttpEventDispatcher implements EventDispatcher {
 
@@ -57,6 +58,7 @@ public class HttpEventDispatcher implements EventDispatcher {
 	 *
 	 * @param event event object.
 	 */
+	@Override
 	synchronized public void submit(Event event) {
 		this.eventMessage.addEvent(event);
 	}
@@ -66,6 +68,7 @@ public class HttpEventDispatcher implements EventDispatcher {
 	 * an exception. In such case events are not cleared, but one can do it manually with
 	 * {@link #dropEvents dropEvents}.
 	 */
+	@Override
 	synchronized public void dispatch(EventDispatchHandler handler) {
 		if (handler == null) {
 			throw new IllegalArgumentException("Dispatch handler cannot be null.");
@@ -93,7 +96,9 @@ public class HttpEventDispatcher implements EventDispatcher {
 	 * Clears collected event list. In no case collected events are sent to the server. So
 	 * {@link #submit submit} is not invoked.
 	 */
+	// TODO: rename to clear().
 	synchronized public void dropEvents() {
+		// TODO: this.eventMessage.clear()
 		this.eventMessage = new EventMessage();
 	}
 }
