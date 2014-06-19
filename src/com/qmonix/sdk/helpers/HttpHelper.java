@@ -123,6 +123,7 @@ public class HttpHelper {
 		return httpResponse;
 	}
 
+
 	/**
 	 * This is a helper class that allows to do network operations on the main UI thread.
 	 * It extends AsyncTask class which handles all thread associated activities.
@@ -132,7 +133,7 @@ public class HttpHelper {
 		/**
 		 * Sends http POST message.
 		 *
-		 * @param msgs	http messages to send. Only first array element, msgs[0], is used.
+		 * @param msgs http messages to send. Only first array element, msgs[0], is used.
 		 * @return http response message on success, exception on failure.
 		 */
 		protected AsyncTaskResult<Object> doInBackground(String... msgs) {
