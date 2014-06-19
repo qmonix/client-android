@@ -9,7 +9,7 @@ import org.json.JSONException;
  *
  * All methods are thread safe.
  */
-public class LogEventDispatcher extends EventDispatcher {
+public class LogEventDispatcher implements EventDispatcher {
 
 	private EventMessage eventMessage = new EventMessage();
 
