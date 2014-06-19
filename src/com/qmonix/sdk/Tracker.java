@@ -28,14 +28,12 @@ import com.qmonix.sdk.utils.Utils;
  * The smallest unit of time is a second. Every event represents a corresponding second - time
  * when it was fired (single events) or started (timing events).
  * <p>
- * Before starting to use {@code Tracker} {@link #init init} must be called, otherwise any attempts
- * to call {@link #start start}, {@link #fire fire}, {@link #getDispatcher getDispatcher} will throw
- * an exception.
+ * By default {@link LogEventDispatcher} is assigned to {@code Tracker}. You can change dispatcher
+ * with {@link #setDispatcher}. An actually when using Tracker in production it is advised to set it
+ * to {@link HttpEventDispatcher} which sends events to Qmonix Web service.
  * <p>
- * When the events are fired they are forwarded to event dispatcher which is reponsible for
- * collecting and dispatching the events.
- * {@link #setDispatcher setDispatcher} is used to replace default dispatcher. You must explicitly
- * tell EventDispatcher to {@link EventDispatcher#dispatch dispatch} events.
+ * NOTE. You must explicitly tell EventDispatcher to {@link EventDispatcher#dispatch dispatch}
+ * events. E.g. Tracker.getDispatcher().dispatch();
  *
  * @see Event
  * @see TimingEvent
