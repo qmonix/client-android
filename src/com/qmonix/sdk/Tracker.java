@@ -25,8 +25,8 @@ import com.qmonix.sdk.exceptions.UninitializedTrackerException;
  * much time user took to fill registration form. Such event would be started when registration form
  * was displayed to the user. In this case the event could be fired when the user hit "Register"
  * button. Timing events show when specific event started and for how long it lasted.
- * {@link #start start} method creates and returns a new timing event object which can be paused,
- * resumed and fired. More detailed description is in {@link TimingEvent} class.
+ * {@link #start start} method creates and returns a new fireable timing event object which can be
+ * paused, resumed and fired. More detailed description is in {@link FireableTimingEvent} class.
  * <p>
  * The smallest unit of time is a second. Every event represents a corresponding second - time
  * when it was fired (single events) or started (timing events).
@@ -36,17 +36,13 @@ import com.qmonix.sdk.exceptions.UninitializedTrackerException;
  * an exception.
  * <p>
  * When the events are fired they are forwarded to event dispatcher which is reponsible for
- * collecting and dispatching the events. Initially {@code Tracker} uses default dispatcher which is
- * described in {@link DefaultEventDispatcher}. But it is possible to use custom dispatcher which
- * should implement {@link EventDispatcher} interface. {@link #setDispatcher setDispatcher} is used
- * to replace default dispatcher. It's up to the user to {@link DefaultEventDispatcher#submit submit}
- * events, otherwise if default dispathcer had collected events, they would not be sent to the
- * Server.
+ * collecting and dispatching the events.
+ * {@link #setDispatcher setDispatcher} is used to replace default dispatcher. You must explicitly
+ * tell EventDispatcher to {@link EventDispatcher#dispatch dispatch} events.
  *
  * @see Event
  * @see TimingEvent
  * @see EventDispatcher
- * @see DefaultEventDispatcher
  * @see UninitializedTrackerException
  */
 public class Tracker {
