@@ -19,19 +19,18 @@ import com.qmonix.sdk.helpers.exceptions.HttpHelperException;
  * <p>
  * {@link #submit submit} inserts new event to the collected event list. It accepts {@link Event}
  * object which describes specific event. {@link #dispatch dispatch} sends those collected
- * events to the Server and clears event list. {@link #dropEvents dropEvents} clears collected event
+ * events to the Server and clears event list. {@link #clear clear} clears collected event
  * list without dispatching them to the Server.
  * <p>
  * Before sending events out {@code DefaultEventDispatcher} encodes current time to the message that
  * is going to bet sent to the server. Using this time stamp server is able to ajust collected
  * events time with server time. All events are eventually registered using server time.
  * <p>
- * {@link #dispatch dispatch}, {@link #submit submit}, {@link #dropEvents dropEvents} are
+ * {@link #dispatch dispatch}, {@link #submit submit}, {@link #clear clear} are
  * thread safe.
  *
  * @see EventDispatcher
  * @see Event
- * @TODO: remove synchronization elements.
  */
 public class HttpEventDispatcher implements EventDispatcher {
 
@@ -66,7 +65,7 @@ public class HttpEventDispatcher implements EventDispatcher {
 	/**
 	 * Sends all events to the Server, clears dispatcher event list. On failure throws
 	 * an exception. In such case events are not cleared, but one can do it manually with
-	 * {@link #dropEvents dropEvents}.
+	 * {@link #clear clear}.
 	 */
 	@Override
 	synchronized public void dispatch(EventDispatchHandler handler) {
@@ -79,7 +78,7 @@ public class HttpEventDispatcher implements EventDispatcher {
 			QLog.debug(jsonEvent);
 
 			this.httpHelper.uiPostMessage(jsonEvent);
-			this.dropEvents();
+			this.clear();
 			handler.onSuccess();
 
 		} catch (JSONException e) {
@@ -96,9 +95,7 @@ public class HttpEventDispatcher implements EventDispatcher {
 	 * Clears collected event list. In no case collected events are sent to the server. So
 	 * {@link #submit submit} is not invoked.
 	 */
-	// TODO: rename to clear().
-	synchronized public void dropEvents() {
-		// TODO: this.eventMessage.clear()
+	synchronized public void clear() {
 		this.eventMessage = new EventMessage();
 	}
 }
