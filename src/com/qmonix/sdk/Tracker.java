@@ -93,8 +93,8 @@ public class Tracker {
 	 */
 	public static void fire(String tag, long volume) {
 		checkInitialized();
-		VolumeEvent event = new VolumeEvent(tag, volume);
-		event.fire();
+		VolumeEvent event = new VolumeEvent(tag, Utils.getUnixTime(), volume);
+		Tracker.dispatcher.submit(event);
 	}
 
 
@@ -108,8 +108,8 @@ public class Tracker {
 	 */
 	public static void fire(String tag) {
 		checkInitialized();
-		Event event = new Event(tag);
-		event.fire();
+		Event event = new Event(tag, Utils.getUnixTime());
+		Tracker.dispatcher.submit(event);
 	}
 
 
@@ -123,11 +123,10 @@ public class Tracker {
 	 * @throws UninitializedTrackerException if {@link #init} was never invoked.
 	 * @see #init
 	 */
-	public static TimingEvent start(String tag) {
+	public static FireableTimingEvent start(String tag) {
 		checkInitialized();
-		TimingEvent newEvent = new TimingEvent(tag);
-		newEvent.start();
-		return newEvent;
+		FireableTimingEvent result = new FireableTimingEvent(tag, Tracker.dispatcher);
+		return result;
 	}
 
 	/**
