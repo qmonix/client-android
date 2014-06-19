@@ -1,10 +1,7 @@
 package com.qmonix.sdk;
 
-import java.lang.String;
-
 import com.qmonix.sdk.utils.Utils;
 
-import com.qmonix.sdk.exceptions.UninitializedTrackerException;
 
 
 /**
@@ -43,11 +40,11 @@ import com.qmonix.sdk.exceptions.UninitializedTrackerException;
  * @see Event
  * @see TimingEvent
  * @see EventDispatcher
- * @see UninitializedTrackerException
  */
 public class Tracker {
 
-	private static EventDispatcher dispatcher;
+	private static EventDispatcher dispatcher = new LogEventDispatcher();
+
 
 	/**
 	 * Prevents from instantiating this class.
@@ -56,58 +53,27 @@ public class Tracker {
 	}
 
 	/**
-	 * Checks if {@code Tracker} singleton was initialized. If it was, returns silently,
-	 * otherwise exception is thrown.
-	 */
-	private static void checkInitialized() {
-		if (Tracker.dispatcher == null) {
-			String msg = "Tracker was not initialized";
-			throw new UninitializedTrackerException(msg);
-		}
-	}
-
-	/**
-	 * Initializes {@code Tracker} singleton by assigning specified event dispatcher object.
-	 * This must bet called before starting to use {@code Tracker}. Any attempts to call methods
-	 * like {@link #fire fire}, {@link #start start} before initializing tracker will result in
-	 * exception.
-	 *
-	 * @param dispatcher event dispatcher object.
-	 */
-	public static void init(EventDispatcher dispatcher) {
-		Tracker.dispatcher = dispatcher;
-	}
-
-	/**
 	 * Adds new volume event to the event dispatcher. Event fire time is when this method is
 	 * invoked. Throws exception if tracker was not initialized.
 	 *
 	 * @param tag unique event tag name.
 	 * @param volume event volume.
-	 * @throws UninitializedTrackerException if {@link #init} was never invoked.
-	 * @see #init
 	 */
 	public static void fire(String tag, long volume) {
-		checkInitialized();
 		VolumeEvent event = new VolumeEvent(tag, Utils.getUnixTime(), volume);
 		Tracker.dispatcher.submit(event);
 	}
-
 
 	/**
 	 * Adds new single event to the event dispatcher. Event fire time is when this method is
 	 * invoked. Throws exception if tracker was not initialized.
 	 *
 	 * @param tag unique event tag name.
-	 * @throws UninitializedTrackerException if {@link #init} was never invoked.
-	 * @see #init
 	 */
 	public static void fire(String tag) {
-		checkInitialized();
 		Event event = new Event(tag, Utils.getUnixTime());
 		Tracker.dispatcher.submit(event);
 	}
-
 
 	/**
 	 * Creates and returns a new timing event with a specified tag name. Before returning timing
@@ -116,11 +82,8 @@ public class Tracker {
 	 * @param tag event tag name.
 	 * @return new timing event object associated with specified tag.
 	 * @see TimingEvent
-	 * @throws UninitializedTrackerException if {@link #init} was never invoked.
-	 * @see #init
 	 */
 	public static FireableTimingEvent start(String tag) {
-		checkInitialized();
 		FireableTimingEvent result = new FireableTimingEvent(tag, Tracker.dispatcher);
 		return result;
 	}
@@ -141,11 +104,8 @@ public class Tracker {
 	 * exception.
 	 *
 	 * @return dispatcher which is currently used by Tracker.
-	 * @throws UninitializedTrackerException if {@link #init} was never invoked.
-	 * @see #init
 	 */
 	public static EventDispatcher getDispatcher() {
-		checkInitialized();
 		return Tracker.dispatcher;
 	}
 }
