@@ -13,6 +13,7 @@ import java.lang.RuntimeException;
  *
  * @see com.qmonix.sdk.Tracker
  */
+@Deprecated
 public class UninitializedTrackerException extends RuntimeException
 {
 	/* @see java.io.Serializable */
