@@ -6,7 +6,6 @@ import java.net.URISyntaxException;
 
 import org.json.JSONException;
 
-import com.qmonix.sdk.EventDispatcher;
 import com.qmonix.sdk.helpers.HttpHelper;
 import com.qmonix.sdk.helpers.exceptions.HttpHelperException;
 
