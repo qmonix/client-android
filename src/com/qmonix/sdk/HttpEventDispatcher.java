@@ -66,6 +66,9 @@ public class HttpEventDispatcher implements EventDispatcher {
 	 * Sends all events to the Server, clears dispatcher event list. On failure throws
 	 * an exception. In such case events are not cleared, but one can do it manually with
 	 * {@link #clear clear}.
+	 *
+	 * Events are sent over HTTP syncrhonously, meaning this method will block until it finishes
+	 * sendind or an error happens.
 	 */
 	@Override
 	synchronized public void dispatch(EventDispatchHandler handler) {
