@@ -6,8 +6,10 @@ import org.json.JSONException;
 /**
  * Prints events to the log output. Good for testing or as a fallback default dispatcher when
  * other dispatchers fails or are not present.
+ *
+ * All methods are thread safe.
  */
-public class LogEventDispatcher {
+public class LogEventDispatcher extends EventDispatcher {
 
 	private EventMessage eventMessage = new EventMessage();
 
@@ -17,7 +19,8 @@ public class LogEventDispatcher {
 	 *
 	 * @param event event to dispatch.
 	 */
-	public void submit(Event event) {
+	@Override
+	synchronized public void submit(Event event) {
 		if (event == null) {
 			throw new IllegalArgumentException("Event cannot be null.");
 		}
@@ -26,13 +29,15 @@ public class LogEventDispatcher {
 	}
 
 	/**
-	 * Sends events encoded to JSON to log output.
+	 * Sends events encoded to JSON to log output. Clears collected events on success.
 	 *
 	 * @param handler success handler.
 	 */
-	public void dispatch(EventDispatchHandler handler) {
+	@Override
+	synchronized public void dispatch(EventDispatchHandler handler) {
 		try {
 			QLog.info(this.eventMessage.toJson());
+			this.eventMessage = new EventMessage();
 			handler.onSuccess();
 
 		} catch (JSONException e) {
