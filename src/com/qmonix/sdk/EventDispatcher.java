@@ -11,8 +11,8 @@ package com.qmonix.sdk;
  *
  * @see Event
  */
-public interface EventDispatcher
-{
+public interface EventDispatcher {
+
 	/**
 	 * Passes a specified event object to the dispatcher.
 	 *
